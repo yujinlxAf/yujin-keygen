@@ -22,30 +22,46 @@
 <body>
     <div class="card">
         <h1>YUJIN TERMINAL</h1>
-        <p>Generate your private access key</p>
+        <p>Fetch an active cloud database key</p>
         <div id="keyDisplay">---</div>
         <div class="btn-group">
-            <button class="gen-btn" onclick="generateKey()">GENERATE KEY</button>
+            <button class="gen-btn" onclick="fetchCloudKey()">GET ACCESS KEY</button>
             <button class="copy-btn" onclick="copyKey()">COPY TO CLIPBOARD</button>
         </div>
         <div id="status" class="status">KEY COPIED!</div>
     </div>
 
     <script>
-        function generateKey() {
-            const chars = "ABCDEF0123456789";
-            let random = "";
-            for (let i = 0; i < 8; i++) {
-                random += chars.charAt(Math.floor(Math.random() * chars.length));
+        let validKeys = [];
+
+        // When the page loads, fetch the keys.txt file automatically
+        window.onload = async function() {
+            try {
+                // Reads the keys.txt file from your GitHub
+                const response = await fetch('keys.txt'); 
+                const text = await response.text();
+                // Split the text into lines and clean up blank spaces
+                validKeys = text.split('\n').map(key => key.trim()).filter(key => key.length > 0);
+            } catch (error) {
+                console.error("Failed to load keys", error);
+                document.getElementById('keyDisplay').innerText = "DATABASE ERROR";
             }
-            const key = "YUJIN-" + random;
-            document.getElementById('keyDisplay').innerText = key;
+        };
+
+        function fetchCloudKey() {
+            if (validKeys.length === 0) {
+                document.getElementById('keyDisplay').innerText = "LOADING...";
+                return;
+            }
+            // Pick a random key from the keys.txt list
+            const randomKey = validKeys[Math.floor(Math.random() * validKeys.length)];
+            document.getElementById('keyDisplay').innerText = randomKey;
             document.getElementById('status').style.opacity = "0";
         }
 
         function copyKey() {
             const key = document.getElementById('keyDisplay').innerText;
-            if (key === "---") return;
+            if (key === "---" || key === "LOADING..." || key === "DATABASE ERROR") return;
             navigator.clipboard.writeText(key);
             const status = document.getElementById('status');
             status.style.opacity = "1";
