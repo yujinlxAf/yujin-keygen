@@ -3,11 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Yujin's Hub | Premium Access</title>
+    <title>YUJIN // TERMINAL</title>
     <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;700&display=swap" rel="stylesheet">
     
     <style>
-        /* Animated Background */
         body { 
             margin: 0; 
             height: 100vh; 
@@ -16,107 +15,144 @@
             align-items: center; 
             font-family: 'Fira Code', monospace; 
             color: #fff;
-            background: linear-gradient(-45deg, #09090b, #1a0b2e, #0b101e, #13091c);
-            background-size: 400% 400%;
-            animation: gradientBG 15s ease infinite;
+            background: #050505;
+            overflow: hidden;
+            user-select: none;
         }
 
-        @keyframes gradientBG {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
+        /* Animated Gradient Background */
+        .bg-glow {
+            position: absolute;
+            width: 150vw;
+            height: 150vh;
+            background: radial-gradient(circle at 50% 50%, rgba(138, 43, 226, 0.1) 0%, rgba(0, 0, 0, 1) 60%);
+            z-index: 0;
+            animation: pulseBg 8s ease-in-out infinite alternate;
         }
 
-        /* Frosted Glass Card */
+        @keyframes pulseBg {
+            0% { transform: scale(1); opacity: 0.8; }
+            100% { transform: scale(1.1); opacity: 1; }
+        }
+
+        /* CRT Scanlines Overlay */
+        .scanlines {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+            background-size: 100% 2px, 3px 100%;
+            z-index: 100;
+            pointer-events: none;
+        }
+
+        /* Boot Sequence Screen */
+        #bootScreen {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: #000;
+            z-index: 50;
+            display: flex;
+            flex-direction: column;
+            padding: 40px;
+            box-sizing: border-box;
+            color: #00ff00;
+            font-size: 14px;
+            text-shadow: 0 0 5px #00ff00;
+        }
+
+        /* Main UI Card */
         .card { 
-            background: rgba(20, 20, 28, 0.45); 
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
+            position: relative;
+            z-index: 10;
+            background: rgba(15, 15, 20, 0.6); 
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
             padding: 40px; 
-            border-radius: 16px; 
-            border: 1px solid rgba(138, 43, 226, 0.3); 
+            border-radius: 12px; 
+            border: 1px solid rgba(138, 43, 226, 0.4); 
             text-align: center; 
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5), inset 0 0 20px rgba(138, 43, 226, 0.1); 
+            box-shadow: 0 0 40px rgba(138, 43, 226, 0.15), inset 0 0 20px rgba(138, 43, 226, 0.1); 
             width: 340px; 
-            transition: transform 0.3s ease;
+            opacity: 0; /* Hidden initially */
+            transform: translateY(20px);
+            transition: all 1s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
-        .card:hover { transform: translateY(-5px); }
-
-        h1 { 
-            color: #b366ff; 
-            margin: 0 0 5px 0; 
-            font-size: 24px; 
-            letter-spacing: 2px; 
-            text-shadow: 0 0 10px rgba(138, 43, 226, 0.5);
+        .card.visible {
+            opacity: 1;
+            transform: translateY(0);
         }
 
-        p { color: #8892b0; font-size: 12px; margin-bottom: 25px; text-transform: uppercase; letter-spacing: 1px; }
+        /* Server Status Ping */
+        .server-status {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            font-size: 10px;
+            color: #8892b0;
+            margin-bottom: 20px;
+            letter-spacing: 1px;
+        }
+        .ping {
+            width: 8px; height: 8px;
+            background: #57ff57;
+            border-radius: 50%;
+            box-shadow: 0 0 10px #57ff57;
+            animation: blink 2s infinite;
+        }
+        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+
+        h1 { color: #fff; margin: 0 0 5px 0; font-size: 24px; letter-spacing: 3px; text-shadow: 0 0 15px rgba(138, 43, 226, 0.8); }
+        p { color: #8892b0; font-size: 11px; margin-bottom: 25px; letter-spacing: 1px; }
 
         /* Neon Key Display */
         #keyDisplay { 
-            background: rgba(10, 10, 15, 0.8); 
-            padding: 18px; 
-            border-radius: 8px; 
+            background: rgba(5, 5, 8, 0.9); 
+            padding: 20px; 
+            border-radius: 6px; 
             font-weight: 700; 
-            margin-bottom: 20px; 
+            margin-bottom: 25px; 
             border: 1px solid #2d2d37; 
             color: #00ffff; 
-            font-size: 17px; 
-            letter-spacing: 1.5px;
-            text-shadow: 0 0 8px rgba(0, 255, 255, 0.4);
-            box-shadow: inset 0 0 10px rgba(0,0,0,0.8);
+            font-size: 18px; 
+            letter-spacing: 2px;
+            text-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+            box-shadow: inset 0 0 15px rgba(0,0,0,1);
         }
 
         .btn-group { display: flex; flex-direction: column; gap: 12px; }
 
         button { 
-            border: none; 
-            padding: 14px; 
-            border-radius: 8px; 
-            cursor: pointer; 
-            font-weight: bold; 
-            font-family: 'Fira Code', monospace;
-            transition: all 0.2s ease; 
-            font-size: 13px; 
-            letter-spacing: 1px;
+            border: none; padding: 15px; border-radius: 6px; cursor: pointer; 
+            font-weight: bold; font-family: 'Fira Code', monospace;
+            transition: all 0.2s ease; font-size: 13px; letter-spacing: 1.5px;
         }
 
-        /* Glowing Primary Button */
-        .gen-btn { 
-            background: linear-gradient(90deg, #8a2be2, #b366ff); 
-            color: white; 
-            box-shadow: 0 4px 15px rgba(138, 43, 226, 0.4);
-        }
-        
-        .gen-btn:hover { 
-            background: linear-gradient(90deg, #9b3cf2, #c480ff); 
-            box-shadow: 0 6px 20px rgba(138, 43, 226, 0.6);
-            transform: scale(1.02);
-        }
-
-        .copy-btn { 
-            background: transparent; 
-            color: #a0a0b0; 
-            border: 1px solid #454555; 
-        }
-
-        .copy-btn:hover { 
-            background: rgba(255, 255, 255, 0.05); 
-            color: #fff;
-            border-color: #8892b0;
-        }
+        .gen-btn { background: #8a2be2; color: white; box-shadow: 0 0 15px rgba(138, 43, 226, 0.3); }
+        .gen-btn:hover { background: #a04ef6; box-shadow: 0 0 25px rgba(138, 43, 226, 0.6); transform: translateY(-2px); }
+        .copy-btn { background: rgba(255, 255, 255, 0.05); color: #a0a0b0; border: 1px solid #454555; }
+        .copy-btn:hover { background: rgba(255, 255, 255, 0.1); color: #fff; border-color: #8892b0; }
 
         .status { font-size: 11px; margin-top: 15px; color: #57ff57; opacity: 0; transition: 0.3s; letter-spacing: 1px; }
     </style>
 </head>
 <body>
-    <div class="card">
-        <h1>YUJIN TERMINAL</h1>
-        <p>Encrypted Database Access</p>
-        <div id="keyDisplay">WAITING...</div>
+    <div class="scanlines"></div>
+    <div class="bg-glow"></div>
+
+    <div id="bootScreen"></div>
+
+    <div class="card" id="mainCard">
+        <div class="server-status">
+            <div class="ping" id="pingDot"></div>
+            <span id="statusText">CONNECTING...</span>
+        </div>
+        <h1>YUJIN OS</h1>
+        <p>SECURE CLOUD AUTHENTICATION</p>
+        <div id="keyDisplay">AWAITING INPUT</div>
         <div class="btn-group">
-            <button class="gen-btn" onclick="triggerDecrypt()">DECRYPT NEW KEY</button>
+            <button class="gen-btn" onclick="triggerDecrypt()">DECRYPT ACCESS KEY</button>
             <button class="copy-btn" onclick="copyKey()">COPY TO CLIPBOARD</button>
         </div>
         <div id="status" class="status">KEY SECURED IN CLIPBOARD</div>
@@ -126,21 +162,61 @@
         let validKeys = [];
         let isDecrypting = false;
 
-        // Fetch keys silently on load
+        // --- Boot Sequence Logic ---
+        const bootLines = [
+            "YUJIN KERNEL v5.7 BOOT SEQUENCE INITIATED...",
+            "LOADING SECURE PROTOCOLS.......... [OK]",
+            "ESTABLISHING HANDSHAKE WITH GITHUB CLOUD.......... [OK]",
+            "BYPASSING FIREWALLS.......... [OK]",
+            "DECRYPTING DATABASE ENTRY.......... [OK]",
+            "ACCESS GRANTED. LAUNCHING UI."
+        ];
+
+        async function runBootSequence() {
+            const bootScreen = document.getElementById('bootScreen');
+            for (let i = 0; i < bootLines.length; i++) {
+                const line = document.createElement('div');
+                line.innerText = "> " + bootLines[i];
+                bootScreen.appendChild(line);
+                
+                // Random delay between lines to look like real loading
+                await new Promise(r => setTimeout(r, Math.random() * 400 + 200));
+            }
+            
+            await new Promise(r => setTimeout(r, 600)); // Pause at the end
+            bootScreen.style.transition = "opacity 0.8s";
+            bootScreen.style.opacity = "0";
+            
+            setTimeout(() => {
+                bootScreen.style.display = "none";
+                document.getElementById('mainCard').classList.add('visible');
+            }, 800);
+        }
+
+        // --- Database Fetch Logic ---
         window.onload = async function() {
+            // Start boot sequence immediately
+            runBootSequence();
+
+            // Fetch keys silently in the background
             try {
                 const response = await fetch('keys.txt'); 
                 const text = await response.text();
                 validKeys = text.split('\n').map(key => key.trim()).filter(key => key.length > 0);
+                
+                document.getElementById('statusText').innerText = "DATABASE: ONLINE";
             } catch (error) {
-                document.getElementById('keyDisplay').innerText = "DATABASE OFFLINE";
+                document.getElementById('statusText').innerText = "DATABASE: OFFLINE";
+                document.getElementById('statusText').style.color = "#ff4444";
+                document.getElementById('pingDot').style.background = "#ff4444";
+                document.getElementById('pingDot').style.boxShadow = "0 0 10px #ff4444";
             }
         };
 
-        // Cyberpunk style text scrambling animation
+        // --- Decrypt Animation Logic ---
         function triggerDecrypt() {
             if (validKeys.length === 0) {
-                document.getElementById('keyDisplay').innerText = "NO KEYS FOUND";
+                document.getElementById('keyDisplay').innerText = "ERR: NO KEYS DETECTED";
                 return;
             }
             if (isDecrypting) return;
@@ -150,7 +226,7 @@
             const targetKey = validKeys[Math.floor(Math.random() * validKeys.length)];
             const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*";
             let iterations = 0;
-            const maxIterations = 20; // How long the scramble lasts
+            const maxIterations = 25;
 
             const interval = setInterval(() => {
                 display.innerText = targetKey.split('').map((char, index) => {
@@ -167,12 +243,12 @@
                     display.innerText = targetKey;
                     isDecrypting = false;
                 }
-            }, 30); // Speed of the scramble
+            }, 30);
         }
 
         function copyKey() {
             const key = document.getElementById('keyDisplay').innerText;
-            if (key === "WAITING..." || key === "DATABASE OFFLINE" || key === "NO KEYS FOUND" || isDecrypting) return;
+            if (key === "AWAITING INPUT" || key === "ERR: NO KEYS DETECTED" || isDecrypting) return;
             
             navigator.clipboard.writeText(key);
             const status = document.getElementById('status');
