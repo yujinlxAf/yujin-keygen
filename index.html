@@ -3,65 +3,177 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Yujin's Hub | Key Access</title>
+    <title>Yujin's Hub | Premium Access</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;700&display=swap" rel="stylesheet">
+    
     <style>
-        body { background: #121216; color: #f0f0ff; font-family: 'Segoe UI', sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
-        .card { background: #1c1c22; padding: 40px; border-radius: 12px; border: 1px solid #8a2be2; text-align: center; box-shadow: 0 0 30px rgba(138, 43, 226, 0.2); width: 320px; }
-        h1 { color: #8a2be2; margin: 0 0 10px 0; font-size: 22px; letter-spacing: 1px; }
-        p { color: #a0a0b0; font-size: 13px; margin-bottom: 25px; }
-        #keyDisplay { background: #0c0c10; padding: 15px; border-radius: 8px; font-weight: bold; font-family: 'Courier New', monospace; margin-bottom: 15px; border: 1px solid #2d2d37; color: #00ffff; font-size: 18px; word-break: break-all; }
-        .btn-group { display: flex; flex-direction: column; gap: 10px; }
-        button { border: none; padding: 12px; border-radius: 6px; cursor: pointer; font-weight: bold; transition: 0.2s; font-size: 13px; }
-        .gen-btn { background: #8a2be2; color: white; }
-        .gen-btn:hover { background: #a04ef6; transform: translateY(-2px); }
-        .copy-btn { background: #2d2d37; color: #f0f0ff; border: 1px solid #454555; }
-        .copy-btn:hover { background: #3d3d4d; }
-        .status { font-size: 11px; margin-top: 10px; color: #57ff57; opacity: 0; transition: 0.3s; }
+        /* Animated Background */
+        body { 
+            margin: 0; 
+            height: 100vh; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            font-family: 'Fira Code', monospace; 
+            color: #fff;
+            background: linear-gradient(-45deg, #09090b, #1a0b2e, #0b101e, #13091c);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Frosted Glass Card */
+        .card { 
+            background: rgba(20, 20, 28, 0.45); 
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            padding: 40px; 
+            border-radius: 16px; 
+            border: 1px solid rgba(138, 43, 226, 0.3); 
+            text-align: center; 
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5), inset 0 0 20px rgba(138, 43, 226, 0.1); 
+            width: 340px; 
+            transition: transform 0.3s ease;
+        }
+
+        .card:hover { transform: translateY(-5px); }
+
+        h1 { 
+            color: #b366ff; 
+            margin: 0 0 5px 0; 
+            font-size: 24px; 
+            letter-spacing: 2px; 
+            text-shadow: 0 0 10px rgba(138, 43, 226, 0.5);
+        }
+
+        p { color: #8892b0; font-size: 12px; margin-bottom: 25px; text-transform: uppercase; letter-spacing: 1px; }
+
+        /* Neon Key Display */
+        #keyDisplay { 
+            background: rgba(10, 10, 15, 0.8); 
+            padding: 18px; 
+            border-radius: 8px; 
+            font-weight: 700; 
+            margin-bottom: 20px; 
+            border: 1px solid #2d2d37; 
+            color: #00ffff; 
+            font-size: 17px; 
+            letter-spacing: 1.5px;
+            text-shadow: 0 0 8px rgba(0, 255, 255, 0.4);
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.8);
+        }
+
+        .btn-group { display: flex; flex-direction: column; gap: 12px; }
+
+        button { 
+            border: none; 
+            padding: 14px; 
+            border-radius: 8px; 
+            cursor: pointer; 
+            font-weight: bold; 
+            font-family: 'Fira Code', monospace;
+            transition: all 0.2s ease; 
+            font-size: 13px; 
+            letter-spacing: 1px;
+        }
+
+        /* Glowing Primary Button */
+        .gen-btn { 
+            background: linear-gradient(90deg, #8a2be2, #b366ff); 
+            color: white; 
+            box-shadow: 0 4px 15px rgba(138, 43, 226, 0.4);
+        }
+        
+        .gen-btn:hover { 
+            background: linear-gradient(90deg, #9b3cf2, #c480ff); 
+            box-shadow: 0 6px 20px rgba(138, 43, 226, 0.6);
+            transform: scale(1.02);
+        }
+
+        .copy-btn { 
+            background: transparent; 
+            color: #a0a0b0; 
+            border: 1px solid #454555; 
+        }
+
+        .copy-btn:hover { 
+            background: rgba(255, 255, 255, 0.05); 
+            color: #fff;
+            border-color: #8892b0;
+        }
+
+        .status { font-size: 11px; margin-top: 15px; color: #57ff57; opacity: 0; transition: 0.3s; letter-spacing: 1px; }
     </style>
 </head>
 <body>
     <div class="card">
         <h1>YUJIN TERMINAL</h1>
-        <p>Fetch an active cloud database key</p>
-        <div id="keyDisplay">---</div>
+        <p>Encrypted Database Access</p>
+        <div id="keyDisplay">WAITING...</div>
         <div class="btn-group">
-            <button class="gen-btn" onclick="fetchCloudKey()">GET ACCESS KEY</button>
+            <button class="gen-btn" onclick="triggerDecrypt()">DECRYPT NEW KEY</button>
             <button class="copy-btn" onclick="copyKey()">COPY TO CLIPBOARD</button>
         </div>
-        <div id="status" class="status">KEY COPIED!</div>
+        <div id="status" class="status">KEY SECURED IN CLIPBOARD</div>
     </div>
 
     <script>
         let validKeys = [];
+        let isDecrypting = false;
 
-        // When the page loads, fetch the keys.txt file automatically
+        // Fetch keys silently on load
         window.onload = async function() {
             try {
-                // Reads the keys.txt file from your GitHub
                 const response = await fetch('keys.txt'); 
                 const text = await response.text();
-                // Split the text into lines and clean up blank spaces
                 validKeys = text.split('\n').map(key => key.trim()).filter(key => key.length > 0);
             } catch (error) {
-                console.error("Failed to load keys", error);
-                document.getElementById('keyDisplay').innerText = "DATABASE ERROR";
+                document.getElementById('keyDisplay').innerText = "DATABASE OFFLINE";
             }
         };
 
-        function fetchCloudKey() {
+        // Cyberpunk style text scrambling animation
+        function triggerDecrypt() {
             if (validKeys.length === 0) {
-                document.getElementById('keyDisplay').innerText = "LOADING...";
+                document.getElementById('keyDisplay').innerText = "NO KEYS FOUND";
                 return;
             }
-            // Pick a random key from the keys.txt list
-            const randomKey = validKeys[Math.floor(Math.random() * validKeys.length)];
-            document.getElementById('keyDisplay').innerText = randomKey;
-            document.getElementById('status').style.opacity = "0";
+            if (isDecrypting) return;
+            
+            isDecrypting = true;
+            const display = document.getElementById('keyDisplay');
+            const targetKey = validKeys[Math.floor(Math.random() * validKeys.length)];
+            const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*";
+            let iterations = 0;
+            const maxIterations = 20; // How long the scramble lasts
+
+            const interval = setInterval(() => {
+                display.innerText = targetKey.split('').map((char, index) => {
+                    if (index < iterations / (maxIterations / targetKey.length)) {
+                        return targetKey[index];
+                    }
+                    return chars[Math.floor(Math.random() * chars.length)];
+                }).join('');
+
+                iterations++;
+
+                if (iterations >= maxIterations) {
+                    clearInterval(interval);
+                    display.innerText = targetKey;
+                    isDecrypting = false;
+                }
+            }, 30); // Speed of the scramble
         }
 
         function copyKey() {
             const key = document.getElementById('keyDisplay').innerText;
-            if (key === "---" || key === "LOADING..." || key === "DATABASE ERROR") return;
+            if (key === "WAITING..." || key === "DATABASE OFFLINE" || key === "NO KEYS FOUND" || isDecrypting) return;
+            
             navigator.clipboard.writeText(key);
             const status = document.getElementById('status');
             status.style.opacity = "1";
